@@ -51,22 +51,27 @@ public class Screen extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("Pressed " + e.getKeyChar());
-                System.out.println("Entra a lo de key type");
-                Directions direction;
-                if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    direction = Directions.LEFT;
-                } else if (e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    direction = Directions.RIGHT;
-                } else if (e.getKeyCode()==KeyEvent.VK_UP){
-                    direction = Directions.UP;
-                } else if (e.getKeyCode()==KeyEvent.VK_DOWN){
-                    direction = Directions.DOWN;
-                } else {
-                    direction= null;
-                    System.out.println("Has pulsado una tecla que no vale");
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    board.getSnakes()[0].setDirection(Directions.LEFT);
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    board.getSnakes()[0].setDirection(Directions.RIGHT);
+                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    board.getSnakes()[0].setDirection(Directions.UP);
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    board.getSnakes()[0].setDirection(Directions.DOWN);
                 }
-                board.getSnake().setDirection(direction);
+
+                if (board.getNumberOfSnakes() >= 2) {
+                    if (e.getKeyCode() == KeyEvent.VK_A) {
+                        board.getSnakes()[1].setDirection(Directions.LEFT);
+                    } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                        board.getSnakes()[1].setDirection(Directions.RIGHT);
+                    } else if (e.getKeyCode() == KeyEvent.VK_W) {
+                        board.getSnakes()[1].setDirection(Directions.UP);
+                    } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                        board.getSnakes()[1].setDirection(Directions.DOWN);
+                    }
+                }
             }
         });
 
@@ -77,7 +82,10 @@ public class Screen extends JPanel {
     public void paintScreen() {
         allBlack();
         paintMap();
-        paintSnake();
+        for (int i = 0; i < board.getNumberOfSnakes(); i++) {
+            paintSnake(board.getSnakes()[i]);
+        }
+
     }
 
     private void allBlack() {
@@ -88,6 +96,7 @@ public class Screen extends JPanel {
     }
 
     private void paintMap() {
+        if (!this.board.allSnakesAlive()) return;
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if (board.isFood(new Position(i, j))) {
@@ -101,11 +110,15 @@ public class Screen extends JPanel {
         }
     }
 
-    private void paintSnake() {
-        int length = this.board.getSnake().getLength();
+    private void paintSnake(Snake snake) {
+        if (!snake.isAlive()) {
+            return;
+        }
+
+        int length = snake.getLength();
         for (int i = 0; i < length - 1; i++) {
-            int x = this.board.getSnake().getPosition()[i].getCoorX();
-            int y = this.board.getSnake().getPosition()[i].getCoorY();
+            int x = snake.getPosition()[i].getCoorX();
+            int y = snake.getPosition()[i].getCoorY();
             g.setColor(Color.WHITE);
             g.fillOval((int) ((x + 0.2) * LENGTH),
                     (int) ((y + 0.2) * LENGTH),
@@ -113,8 +126,8 @@ public class Screen extends JPanel {
                     (int) (0.8 * LENGTH));
         }
 
-        int x = this.board.getSnake().getPosition()[length - 1].getCoorX();
-        int y = this.board.getSnake().getPosition()[length - 1].getCoorY();
+        int x = snake.getPosition()[length - 1].getCoorX();
+        int y = snake.getPosition()[length - 1].getCoorY();
         g.setColor(Color.BLUE);
         g.fillRect((int) ((x + 0.2) * LENGTH),
                 (int) ((y + 0.2) * LENGTH),

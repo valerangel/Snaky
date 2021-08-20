@@ -1,14 +1,13 @@
 public class Main {
     public static void main (String[] args){
-        Board board = new Board(15, 15);
+        Board board = new Board(20, 18, 2);
         Screen screen = new Screen(board);
 
         while (true){
             board.move();
-            //board.paintBoard();
             screen.paintScreen();
             try {
-                Thread.sleep(500);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

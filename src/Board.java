@@ -5,18 +5,20 @@ public class Board {
     private Cells[][] map;
     private int sizeX;
     private int sizeY;
-    private Snake snake;
+    private Snake[] snakes;
+    private int numberOfSnakes;
 
     private Directions direction;
 
-    public Board(int sizeX, int sizeY) {
+    public Board(int sizeX, int sizeY, int numberOfSnakes) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        this.numberOfSnakes = numberOfSnakes;
         this.map = new Cells[sizeX][sizeY];
         this.direction = Directions.RIGHT;
 
         fillEmptyMap();
-        createSnake();
+        createSnakes();
         createNewFood();
     }
 
@@ -29,8 +31,11 @@ public class Board {
         }
     }
 
-    private void createSnake() {
-        this.snake = new Snake(this);
+    private void createSnakes() {
+        snakes = new Snake[numberOfSnakes];
+        for (int i = 0; i < numberOfSnakes; i++) {
+            this.snakes[i] = new Snake(this, i);
+        }
     }
 
     public void iterate() {
@@ -71,18 +76,21 @@ public class Board {
     }
 
     private boolean alreadyASnake(Position position) {
-        for (int i = 0; i < this.snake.getLength(); i++) {
-            if (position.samePosition(this.snake.getPosition()[i])) return true;
+        for (int j = 0; j < numberOfSnakes; j++) {
+            for (int i = 0; i < this.snakes[j].getLength(); i++) {
+                if (position.samePosition(this.snakes[j].getPosition()[i])) {
+                    return true;
+                }
+            }
         }
         return false;
     }
 
-    public void setSnake(Snake snake) {
-        this.snake = snake;
-    }
-
     public void createNewFood() {
-        int cellsNoSnake = sizeX * sizeY - this.snake.getLength();
+        int cellsNoSnake = sizeX * sizeY;
+        for (int i = 0; i < numberOfSnakes; i++) {
+            cellsNoSnake = cellsNoSnake - this.snakes[i].getLength();
+        }
         Position[] positionsWithoutSnakes = new Position[cellsNoSnake];
         int k = 0;
         for (int i = 0; i < sizeX; i++) {
@@ -99,8 +107,8 @@ public class Board {
         this.map[pos2.getCoorX()][pos2.getCoorY()] = Cells.FOOD;
     }
 
-    public Snake getSnake (){
-        return this.snake;
+    public Snake[] getSnakes() {
+        return this.snakes;
     }
 
     public void deleteFood(Position position) {
@@ -108,7 +116,16 @@ public class Board {
     }
 
     public void move() {
-        this.snake.moveSnake();
+        for (int i = 0; i < numberOfSnakes; i++) {
+            this.snakes[i].moveSnake();
+        }
+    }
+
+    public boolean allSnakesAlive() {
+        for (int i = 0; i < numberOfSnakes; i++) {
+            if (!snakes[i].isAlive()) return false;
+        }
+        return true;
     }
 
     public int getSizeX() {
@@ -119,31 +136,7 @@ public class Board {
         return sizeY;
     }
 
-    public void paintBoard() {
-        String[][] boardS = new String[sizeX][sizeY];
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                if (this.map[i][j] == Cells.NOFOOD) {
-                    boardS[i][j] = "-";
-                } else {
-                    boardS[i][j] = "O";
-                }
-            }
-        }
-
-        for (int i = 0; i < this.snake.getLength(); i++) {
-            if (snake.getPosition()[i] != null) {
-                boardS[snake.getPosition()[i].getCoorX()][snake.getPosition()[i].getCoorY()] = "X";
-            } else System.out.println("ESto sa roto" + this.snake.getLength() + "   i= " + i);
-        }
-
-        System.out.println("\n\tGAME OF THE SNAKE");
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                System.out.print(boardS[i][j]);
-            }
-            System.out.println();
-        }
-
+    public int getNumberOfSnakes() {
+        return numberOfSnakes;
     }
 }

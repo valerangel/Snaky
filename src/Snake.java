@@ -12,23 +12,29 @@ public class Snake {
     private Directions lastMove;
 
     private StatusSnake statusSnake;
+    private int snakeNumber;
 
     //private static int  numberOfSnakes = 0;
 
-    public Snake(Board board) {
+    public Snake(Board board, int snakeNumber) {
         this.board = board;
         this.length = 3;
         //Snake.numberOfSnakes++;
         this.direction = Directions.RIGHT;
         this.lastMove = Directions.RIGHT;
         this.statusSnake = StatusSnake.ALIVE;
+        this.snakeNumber = snakeNumber;
 
         this.position = new Position[length];
-        for (int i = 0; i < length; i++) {
-            this.position[i] = new Position(i, 0);
+        if(snakeNumber == 0) {
+            for (int i = 0; i < length; i++) {
+                this.position[i] = new Position(i, 0);
+            }
+        } else if(snakeNumber == 1) {
+            for (int i = 0; i < length; i++) {
+                this.position[i] = new Position(i, 10);
+            }
         }
-
-
 
     }
 
@@ -108,5 +114,9 @@ public class Snake {
 
     public Position[] getPosition() {
         return position;
+    }
+
+    public boolean isAlive(){
+        return this.statusSnake == StatusSnake.ALIVE;
     }
 }

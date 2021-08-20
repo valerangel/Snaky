@@ -44,12 +44,13 @@ public class Snake {
         }
 
         if (nexPositionIsFood()) {
-            newPositions = new Position[length++];
+            newPositions = new Position[length+1];
             for (int i = 0; i < length; i++) {
                 newPositions[i] = position[i];
             }
-            newPositions[length - 1] = nextPosition();
+            newPositions[length] = nextPosition();
             length++;
+            this.position = newPositions;
             this.board.deleteFood(newPositions[length - 1]);
             this.board.createNewFood();
         } else {

@@ -41,12 +41,10 @@ public class Screen extends JPanel {
         this.jframe.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("Typed " + e.getKeyChar());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                System.out.println("Released " + e.getKeyChar());
             }
 
             @Override
@@ -96,7 +94,7 @@ public class Screen extends JPanel {
     }
 
     private void paintMap() {
-        if (!this.board.allSnakesAlive()) return;
+        //if (!this.board.allSnakesAlive()) return;
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if (board.isFood(new Position(i, j))) {
@@ -128,7 +126,11 @@ public class Screen extends JPanel {
 
         int x = snake.getPosition()[length - 1].getCoorX();
         int y = snake.getPosition()[length - 1].getCoorY();
-        g.setColor(Color.BLUE);
+        if(snake.getSnakeNumber()==0) {
+            g.setColor(Color.BLUE);
+        } else {
+            g.setColor(Color.GREEN);
+        }
         g.fillRect((int) ((x + 0.2) * LENGTH),
                 (int) ((y + 0.2) * LENGTH),
                 (int) (0.8 * LENGTH),

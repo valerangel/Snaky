@@ -8,14 +8,12 @@ public class Board {
     private Snake[] snakes;
     private int numberOfSnakes;
 
-    private Directions direction;
 
     public Board(int sizeX, int sizeY, int numberOfSnakes) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.numberOfSnakes = numberOfSnakes;
         this.map = new Cells[sizeX][sizeY];
-        this.direction = Directions.RIGHT;
 
         fillEmptyMap();
         createSnakes();
@@ -36,22 +34,6 @@ public class Board {
         for (int i = 0; i < numberOfSnakes; i++) {
             this.snakes[i] = new Snake(this, i);
         }
-    }
-
-    public void iterate() {
-        Cells[][] mapCopy = copyTheMap();
-
-    }
-
-
-    private Cells[][] copyTheMap() {
-        Cells[][] mapCopy = new Cells[sizeX][sizeY];
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                mapCopy[i][j] = map[i][j];
-            }
-        }
-        return mapCopy;
     }
 
     public boolean isFood(Position position) {
@@ -77,9 +59,11 @@ public class Board {
 
     private boolean alreadyASnake(Position position) {
         for (int j = 0; j < numberOfSnakes; j++) {
-            for (int i = 0; i < this.snakes[j].getLength(); i++) {
-                if (position.samePosition(this.snakes[j].getPosition()[i])) {
-                    return true;
+            if (this.snakes[j].isAlive()) {
+                for (int i = 0; i < this.snakes[j].getLength(); i++) {
+                    if (position.samePosition(this.snakes[j].getPosition()[i])) {
+                        return true;
+                    }
                 }
             }
         }
@@ -89,7 +73,9 @@ public class Board {
     public void createNewFood() {
         int cellsNoSnake = sizeX * sizeY;
         for (int i = 0; i < numberOfSnakes; i++) {
-            cellsNoSnake = cellsNoSnake - this.snakes[i].getLength();
+            if (this.snakes[i].isAlive()) {
+                cellsNoSnake = cellsNoSnake - this.snakes[i].getLength();
+            }
         }
         Position[] positionsWithoutSnakes = new Position[cellsNoSnake];
         int k = 0;
@@ -107,9 +93,6 @@ public class Board {
         this.map[pos2.getCoorX()][pos2.getCoorY()] = Cells.FOOD;
     }
 
-    public Snake[] getSnakes() {
-        return this.snakes;
-    }
 
     public void deleteFood(Position position) {
         this.map[position.getCoorX()][position.getCoorY()] = Cells.NOFOOD;
@@ -126,6 +109,10 @@ public class Board {
             if (!snakes[i].isAlive()) return false;
         }
         return true;
+    }
+
+    public Snake[] getSnakes() {
+        return this.snakes;
     }
 
     public int getSizeX() {

@@ -32,7 +32,7 @@ public class Snake {
             }
         } else if(snakeNumber == 1) {
             for (int i = 0; i < length; i++) {
-                this.position[i] = new Position(i, 10);
+                this.position[i] = new Position(i, board.getSizeY()-1);
             }
         }
 
@@ -114,6 +114,10 @@ public class Snake {
 
     public Position[] getPosition() {
         return position;
+    }
+
+    public int getSnakeNumber(){
+        return snakeNumber;
     }
 
     public boolean isAlive(){

@@ -7,7 +7,7 @@ public class Main {
             board.move();
             screen.paintScreen();
             try {
-                Thread.sleep(200);
+                Thread.sleep(board.getTimeOfGame());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

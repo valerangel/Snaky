@@ -58,7 +58,7 @@ public class Snake {
             length++;
             this.position = newPositions;
             this.board.deleteFood(newPositions[length - 1]);
-            this.board.createNewFood();
+            this.board.eatAFruit();
         } else {
             newPositions = new Position[length];
             for (int i = 1; i < length; i++) {

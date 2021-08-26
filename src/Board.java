@@ -7,6 +7,7 @@ public class Board {
     private int sizeY;
     private Snake[] snakes;
     private int numberOfSnakes;
+    private int numberOfFruitsEaten;
 
 
     public Board(int sizeX, int sizeY, int numberOfSnakes) {
@@ -71,7 +72,7 @@ public class Board {
         return false;
     }
 
-    public void createNewFood() {
+    private void createNewFood() {
         int cellsNoSnake = sizeX * sizeY;
         for (int i = 0; i < numberOfSnakes; i++) {
             if (this.snakes[i].isAlive()) {
@@ -110,6 +111,15 @@ public class Board {
             if (!snakes[i].isAlive()) return false;
         }
         return true;
+    }
+
+    public int getTimeOfGame(){
+        return 200 - 10 * this.numberOfFruitsEaten;
+    }
+
+    public void eatAFruit(){
+        this.numberOfFruitsEaten++;
+        this.createNewFood();
     }
 
     public Snake[] getSnakes() {

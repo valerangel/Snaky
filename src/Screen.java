@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Screen extends JPanel {
 
@@ -22,7 +23,7 @@ public class Screen extends JPanel {
         this.sizeY = board.getSizeY();
 
 
-        this.jframe = new JFrame("Game of Life");
+        this.jframe = new JFrame("Snaky");
         this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.jframe.setSize(sizeX * LENGTH + 15,
                 sizeY * LENGTH + 45);
@@ -89,22 +90,33 @@ public class Screen extends JPanel {
     private void allBlack() {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,
-                this.sizeX * LENGTH,
-                this.sizeY * LENGTH);
+                this.sizeX * LENGTH+100,
+                this.sizeY * LENGTH+100);
     }
 
     private void paintMap() {
         //if (!this.board.allSnakesAlive()) return;
+        ArrayList<Position> cellsAlive = new ArrayList<>();
+
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if (board.isFood(new Position(i, j))) {
-                    g.setColor(Color.RED);
+                    cellsAlive.add(new Position(i,j));
+                    /*g.setColor(Color.RED);
                     g.fillOval((int) ((i + 0.33) * LENGTH),
                             (int) ((j + 0.33) * LENGTH),
                             (int) (0.67 * LENGTH),
-                            (int) (0.67 * LENGTH));
+                            (int) (0.67 * LENGTH));*/
                 }
             }
+        }
+
+        g.setColor(Color.RED);
+        for (Position p : cellsAlive) {
+            g.fillOval((int) ((p.getCoorX() + 0.33) * LENGTH),
+                    (int) ((p.getCoorY() + 0.33) * LENGTH),
+                    (int) (0.67 * LENGTH),
+                    (int) (0.67 * LENGTH));
         }
     }
 

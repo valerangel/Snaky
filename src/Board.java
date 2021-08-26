@@ -18,6 +18,7 @@ public class Board {
         fillEmptyMap();
         createSnakes();
         createNewFood();
+        createNewFood();
     }
 
 

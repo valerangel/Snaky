@@ -13,6 +13,7 @@ public class Snake {
 
     private StatusSnake statusSnake;
     private int snakeNumber;
+    private int points;
 
     //private static int  numberOfSnakes = 0;
 
@@ -24,6 +25,7 @@ public class Snake {
         this.lastMove = Directions.RIGHT;
         this.statusSnake = StatusSnake.ALIVE;
         this.snakeNumber = snakeNumber;
+        this.points = 0;
 
         this.position = new Position[length];
         if(snakeNumber == 0) {
@@ -59,6 +61,7 @@ public class Snake {
             this.position = newPositions;
             this.board.deleteFood(newPositions[length - 1]);
             this.board.eatAFruit();
+            this.points++;
         } else {
             newPositions = new Position[length];
             for (int i = 1; i < length; i++) {
@@ -120,7 +123,12 @@ public class Snake {
         return snakeNumber;
     }
 
+    public int getPoints(){
+        return this.points;
+    }
+
     public boolean isAlive(){
         return this.statusSnake == StatusSnake.ALIVE;
     }
+
 }

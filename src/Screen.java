@@ -84,6 +84,7 @@ public class Screen extends JPanel {
         for (int i = 0; i < board.getNumberOfSnakes(); i++) {
             paintSnake(board.getSnakes()[i]);
         }
+        paintPoints();
 
     }
 
@@ -147,5 +148,15 @@ public class Screen extends JPanel {
                 (int) ((y + 0.2) * LENGTH),
                 (int) (0.8 * LENGTH),
                 (int) (0.8 * LENGTH));
+    }
+
+    private void paintPoints(){
+        this.g.setColor(Color.WHITE);
+        Font font = new Font("Verdana", Font.PLAIN, 18);
+        g.setFont(font);
+        for (int i = 0; i < board.getNumberOfSnakes(); i++) {
+            this.g.drawString("Snaky " + (i+1) + ": "+ board.getSnakes()[i].getPoints() + " pts",
+                    2* LENGTH+ i*(LENGTH* (sizeX-7)), LENGTH);
+        }
     }
 }

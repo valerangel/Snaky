@@ -6,14 +6,12 @@ public class Main {
         while (gameIsActive) {
             gameIsActive = beginGame();
         }
+        // TODO: ensure the game-app is properly closed
     }
 
     public static boolean beginGame() {
-        Object[] options = {"" + 1, "" + 2};
-        int numberOfPlayers = JOptionPane.showOptionDialog(null, "Select number of players", "Snaky, the Game",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION,
-                null, options, options[1]);
-        System.out.println(numberOfPlayers);
+        int numberOfPlayers = askNumberOfPlayers();
+        System.out.println("Number of players: " + numberOfPlayers);
 
         Board board = new Board(40, 18, numberOfPlayers + 1);
         Screen screen = new Screen(board);
@@ -29,5 +27,13 @@ public class Main {
         }
 
         return screen.gameOver();
+    }
+
+    private static int askNumberOfPlayers() {
+        Object[] options = {"1 Player", "2 Players"};
+
+        return JOptionPane.showOptionDialog(null, "Select number of players", "Snaky, the Game",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION,
+                null, options, options[1]);
     }
 }

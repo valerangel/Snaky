@@ -6,21 +6,22 @@ public class Board {
     private Snake[] snakes;
     private final int numberOfSnakes;
     private int numberOfFruitsEaten;
-    private final boolean gameIsPlaying;
 
+    public enum Cells {
+        FOOD,
+        NOFOOD
+    }
 
     public Board(int sizeX, int sizeY, int numberOfSnakes) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.numberOfSnakes = numberOfSnakes;
         this.map = new Cells[sizeX][sizeY];
-        this.gameIsPlaying = true;
 
         fillEmptyMap();
         createSnakes();
         createNewFood();
         createNewFood();
-
     }
 
 

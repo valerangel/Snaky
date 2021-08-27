@@ -19,9 +19,8 @@ public class Screen extends JPanel {
         this.sizeX = board.getSizeX();
         this.sizeY = board.getSizeY();
 
-
         this.jframe = new JFrame("Snaky");
-        //this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.jframe.setSize(sizeX * LENGTH + 15,
                 sizeY * LENGTH + 45);
         this.jframe.setVisible(true);
@@ -74,7 +73,6 @@ public class Screen extends JPanel {
         jframe.setFocusable(true);
         jpanel.setBackground(Color.BLACK);
         jframe.setLocationRelativeTo(null);
-
     }
 
     public void paintScreen() {

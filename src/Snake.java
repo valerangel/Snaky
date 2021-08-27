@@ -11,6 +11,11 @@ public class Snake {
 
     //private static int  numberOfSnakes = 0;
 
+    public enum StatusSnake {
+        DEAD,
+        ALIVE
+    }
+
     public Snake(Board board, int snakeNumber) {
         this.board = board;
         this.length = 3;

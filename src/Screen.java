@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class Screen extends JPanel {
@@ -24,7 +25,7 @@ public class Screen extends JPanel {
 
 
         this.jframe = new JFrame("Snaky");
-        this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.jframe.setSize(sizeX * LENGTH + 15,
                 sizeY * LENGTH + 45);
         this.jframe.setVisible(true);
@@ -172,5 +173,24 @@ public class Screen extends JPanel {
         );
 
         this.g.drawString(text, posX, LENGTH);
+    }
+
+    public boolean gameOver(){
+        this.jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
+
+        String text;
+
+        if(board.getSnakeWithMostPoints()>0){
+            text = String.format("Player %d won!!.\n¿Another game?",
+                    board.getSnakeWithMostPoints());
+        } else{
+            text = "TIE, both players lose.\n¿How about another game?";
+        }
+
+
+        int yesOption = JOptionPane.showConfirmDialog(null,
+                text, "Snaky, the Game", JOptionPane.YES_NO_OPTION);
+        return  (yesOption == JOptionPane.YES_NO_OPTION);
+
     }
 }

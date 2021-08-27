@@ -103,6 +103,8 @@ public class Board {
         this.map[position.getCoorX()][position.getCoorY()] = Cells.NOFOOD;
     }
 
+
+
     public void move() {
         for (int i = 0; i < numberOfSnakes; i++) {
             this.snakes[i].moveSnake();
@@ -145,6 +147,17 @@ public class Board {
         return numberOfSnakes;
     }
 
+    public int getSnakeWithMostPoints(){
+        if(numberOfSnakes>1){
+            if(snakes[1].getPoints() > snakes[0].getPoints()){
+                return 2;
+            } else if(snakes[1].getPoints() == snakes[0].getPoints()){
+                return -1;
+            }
+        }
+        return 1;
+    }
+
     public boolean isGamePlaying() {
         if (!this.snakes[0].isAlive()) {
 
@@ -161,7 +174,7 @@ public class Board {
             }
         }
 
-        if (numberOfSnakes >= 1) {
+        if (numberOfSnakes > 1) {
             return this.snakes[1].isAlive();
         }
 

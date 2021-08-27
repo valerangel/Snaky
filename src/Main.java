@@ -3,7 +3,7 @@ public class Main {
         Board board = new Board(40, 18, 2);
         Screen screen = new Screen(board);
 
-        while (true){
+        while (board.isGamePlaying()){
             board.move();
             screen.paintScreen();
             try {
@@ -13,6 +13,4 @@ public class Main {
             }
         }
     }
-
-
 }

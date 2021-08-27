@@ -75,6 +75,8 @@ public class Screen extends JPanel {
         });
 
         jframe.setFocusable(true);
+        jpanel.setBackground(Color.BLACK);
+        jframe.setLocationRelativeTo(null);
 
     }
 
@@ -91,33 +93,35 @@ public class Screen extends JPanel {
     private void allBlack() {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,
-                this.sizeX * LENGTH+100,
-                this.sizeY * LENGTH+100);
+                this.sizeX * LENGTH + 100,
+                this.sizeY * LENGTH + 100);
     }
 
     private void paintMap() {
-        //if (!this.board.allSnakesAlive()) return;
         ArrayList<Position> cellsAlive = new ArrayList<>();
 
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 if (board.isFood(new Position(i, j))) {
-                    cellsAlive.add(new Position(i,j));
-                    /*g.setColor(Color.RED);
-                    g.fillOval((int) ((i + 0.33) * LENGTH),
-                            (int) ((j + 0.33) * LENGTH),
-                            (int) (0.67 * LENGTH),
-                            (int) (0.67 * LENGTH));*/
+                    cellsAlive.add(new Position(i, j));
                 }
             }
         }
 
-        g.setColor(Color.RED);
         for (Position p : cellsAlive) {
+            g.setColor(Color.RED);
             g.fillOval((int) ((p.getCoorX() + 0.33) * LENGTH),
                     (int) ((p.getCoorY() + 0.33) * LENGTH),
                     (int) (0.67 * LENGTH),
-                    (int) (0.67 * LENGTH));
+                    (int) (0.67 * LENGTH)
+            );
+            g.setColor(Color.GREEN);
+            g.fillRect(
+                    (int) ((p.getCoorX() + 0.6) * LENGTH),
+                    (int) ((p.getCoorY() + 0.2) * LENGTH),
+                    (int) (0.1 * LENGTH),
+                    (int) (0.3 * LENGTH)
+            );
         }
     }
 
@@ -130,7 +134,7 @@ public class Screen extends JPanel {
         for (int i = 0; i < length - 1; i++) {
             int x = snake.getPosition()[i].getCoorX();
             int y = snake.getPosition()[i].getCoorY();
-            g.setColor(Color.WHITE);
+            g.setColor(new Color(180,180,180));
             g.fillOval((int) ((x + 0.2) * LENGTH),
                     (int) ((y + 0.2) * LENGTH),
                     (int) (0.8 * LENGTH),
@@ -139,7 +143,7 @@ public class Screen extends JPanel {
 
         int x = snake.getPosition()[length - 1].getCoorX();
         int y = snake.getPosition()[length - 1].getCoorY();
-        if(snake.getSnakeNumber()==0) {
+        if (snake.getSnakeNumber() == 0) {
             g.setColor(Color.BLUE);
         } else {
             g.setColor(Color.GREEN);
@@ -150,13 +154,23 @@ public class Screen extends JPanel {
                 (int) (0.8 * LENGTH));
     }
 
-    private void paintPoints(){
+    private void paintPoints() {
         this.g.setColor(Color.WHITE);
         Font font = new Font("Verdana", Font.PLAIN, 18);
         g.setFont(font);
         for (int i = 0; i < board.getNumberOfSnakes(); i++) {
-            this.g.drawString("Snaky " + (i+1) + ": "+ board.getSnakes()[i].getPoints() + " pts",
-                    2* LENGTH+ i*(LENGTH* (sizeX-7)), LENGTH);
+            paintPointsForASnaky(i);
         }
+    }
+
+    private void paintPointsForASnaky(int numberOfSnake) {
+        int posX = (numberOfSnake == 0) ? 2 * LENGTH : LENGTH * (sizeX - 6);
+
+        String text = String.format("Snaky %d: %d pts",
+                (numberOfSnake + 1),
+                board.getSnakes()[numberOfSnake].getPoints()
+        );
+
+        this.g.drawString(text, posX, LENGTH);
     }
 }

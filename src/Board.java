@@ -8,6 +8,7 @@ public class Board {
     private Snake[] snakes;
     private int numberOfSnakes;
     private int numberOfFruitsEaten;
+    private boolean gameIsPlaying;
 
 
     public Board(int sizeX, int sizeY, int numberOfSnakes) {
@@ -15,11 +16,13 @@ public class Board {
         this.sizeY = sizeY;
         this.numberOfSnakes = numberOfSnakes;
         this.map = new Cells[sizeX][sizeY];
+        this.gameIsPlaying = true;
 
         fillEmptyMap();
         createSnakes();
         createNewFood();
         createNewFood();
+
     }
 
 
@@ -113,11 +116,15 @@ public class Board {
         return true;
     }
 
-    public int getTimeOfGame(){
-        return 200 - 10 * this.numberOfFruitsEaten;
+    public int getTimeOfGame() {
+        if (this.numberOfSnakes == 1) {
+            return 180 - 5 * this.numberOfFruitsEaten;
+        }
+
+        return Math.min(180 - 5 * this.snakes[0].getPoints(), 180 - 5 * this.snakes[1].getPoints());
     }
 
-    public void eatAFruit(){
+    public void eatAFruit() {
         this.numberOfFruitsEaten++;
         this.createNewFood();
     }
@@ -136,5 +143,28 @@ public class Board {
 
     public int getNumberOfSnakes() {
         return numberOfSnakes;
+    }
+
+    public boolean isGamePlaying() {
+        if (!this.snakes[0].isAlive()) {
+
+            if (this.numberOfSnakes == 1) {
+                return false;
+            }
+
+            if (!this.snakes[1].isAlive()) {
+                return false;
+            }
+
+            if (snakes[0].getPoints() <= snakes[1].getPoints()) {
+                return false;
+            }
+        }
+
+        if (numberOfSnakes >= 1) {
+            return this.snakes[1].isAlive();
+        }
+
+        return true;
     }
 }

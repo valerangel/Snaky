@@ -4,7 +4,7 @@
 
 This project is a version of the classical game Snake.
 
-It includes two snakes and has potencial to have more snakes.
+It includes two snakes and has potential to have more snakes.
 
 The first Snake moves with WASD and the second with the arrows of the keyboard.
 

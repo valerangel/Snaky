@@ -18,14 +18,10 @@ public class Position {
     public boolean samePosition(Position pos2) {
         if (pos2 == null) {
             return false;
-        } ;
+        }
         if (this.coorX != pos2.getCoorX()) {
             return false;
         }
-        if (this.coorY != pos2.getCoorY()) {
-            return false;
-        }
-        return true;
+        return this.coorY == pos2.getCoorY();
     }
-
 }

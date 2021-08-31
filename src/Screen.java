@@ -8,34 +8,29 @@ import java.util.ArrayList;
 public class Screen extends JPanel {
 
     public static final int LENGTH = 30;
-
-
-    private JFrame jframe;
-    private JPanel jpanel;
-    private Graphics g;
-
     public Board board;
     public int sizeX;
     public int sizeY;
+    private final JFrame jframe;
+    private final Graphics g;
 
     public Screen(Board board) {
         this.board = board;
         this.sizeX = board.getSizeX();
         this.sizeY = board.getSizeY();
 
-
         this.jframe = new JFrame("Snaky");
-        //this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.jframe.setSize(sizeX * LENGTH + 15,
                 sizeY * LENGTH + 45);
         this.jframe.setVisible(true);
 
 
-        this.jpanel = new JPanel(new BorderLayout());
-        this.jpanel.setSize(sizeX * LENGTH + 15,
+        JPanel jpanel = new JPanel(new BorderLayout());
+        jpanel.setSize(sizeX * LENGTH + 15,
                 sizeY * LENGTH + 45);
 
-        this.jframe.add(this.jpanel);
+        this.jframe.add(jpanel);
         this.jframe.setResizable(false);
         this.g = jpanel.getGraphics();
         paintScreen();
@@ -52,24 +47,24 @@ public class Screen extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    board.getSnakes()[0].setDirection(Directions.LEFT);
+                    board.getSnakes()[0].setDirection(Direction.LEFT);
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    board.getSnakes()[0].setDirection(Directions.RIGHT);
+                    board.getSnakes()[0].setDirection(Direction.RIGHT);
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    board.getSnakes()[0].setDirection(Directions.UP);
+                    board.getSnakes()[0].setDirection(Direction.UP);
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    board.getSnakes()[0].setDirection(Directions.DOWN);
+                    board.getSnakes()[0].setDirection(Direction.DOWN);
                 }
 
                 if (board.getNumberOfSnakes() >= 2) {
                     if (e.getKeyCode() == KeyEvent.VK_A) {
-                        board.getSnakes()[1].setDirection(Directions.LEFT);
+                        board.getSnakes()[1].setDirection(Direction.LEFT);
                     } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                        board.getSnakes()[1].setDirection(Directions.RIGHT);
+                        board.getSnakes()[1].setDirection(Direction.RIGHT);
                     } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                        board.getSnakes()[1].setDirection(Directions.UP);
+                        board.getSnakes()[1].setDirection(Direction.UP);
                     } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                        board.getSnakes()[1].setDirection(Directions.DOWN);
+                        board.getSnakes()[1].setDirection(Direction.DOWN);
                     }
                 }
             }
@@ -78,7 +73,6 @@ public class Screen extends JPanel {
         jframe.setFocusable(true);
         jpanel.setBackground(Color.BLACK);
         jframe.setLocationRelativeTo(null);
-
     }
 
     public void paintScreen() {
@@ -135,7 +129,7 @@ public class Screen extends JPanel {
         for (int i = 0; i < length - 1; i++) {
             int x = snake.getPosition()[i].getCoorX();
             int y = snake.getPosition()[i].getCoorY();
-            g.setColor(new Color(180,180,180));
+            g.setColor(new Color(180, 180, 180));
             g.fillOval((int) ((x + 0.2) * LENGTH),
                     (int) ((y + 0.2) * LENGTH),
                     (int) (0.8 * LENGTH),
@@ -156,7 +150,7 @@ public class Screen extends JPanel {
     }
 
     private void paintPoints() {
-        this.g.setColor(Color.WHITE);
+        g.setColor(Color.WHITE);
         Font font = new Font("Verdana", Font.PLAIN, 18);
         g.setFont(font);
         for (int i = 0; i < board.getNumberOfSnakes(); i++) {
@@ -172,25 +166,24 @@ public class Screen extends JPanel {
                 board.getSnakes()[numberOfSnake].getPoints()
         );
 
-        this.g.drawString(text, posX, LENGTH);
+        g.drawString(text, posX, LENGTH);
     }
 
-    public boolean gameOver(){
+    public boolean gameOver() {
         this.jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
 
-        String text;
+        int yesOption = JOptionPane.showConfirmDialog(
+                null, buildGameOverText(),
+                "Snaky, the Game", JOptionPane.YES_NO_OPTION);
 
-        if(board.getSnakeWithMostPoints()>0){
-            text = String.format("Player %d won!!.\n¿Another game?",
+        return (yesOption == JOptionPane.YES_NO_OPTION);
+    }
+
+    private String buildGameOverText() {
+        if (board.getSnakeWithMostPoints() > 0) {
+            return String.format("Player %d won!!.\n¿Another game?",
                     board.getSnakeWithMostPoints());
-        } else{
-            text = "TIE, both players lose.\n¿How about another game?";
         }
-
-
-        int yesOption = JOptionPane.showConfirmDialog(null,
-                text, "Snaky, the Game", JOptionPane.YES_NO_OPTION);
-        return  (yesOption == JOptionPane.YES_NO_OPTION);
-
+        return "TIE, both players lose.\n¿How about another game?";
     }
 }

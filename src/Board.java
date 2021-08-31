@@ -1,28 +1,27 @@
-
-
 public class Board {
 
-    private Cells[][] map;
-    private int sizeX;
-    private int sizeY;
+    private final Cells[][] map;
+    private final int sizeX;
+    private final int sizeY;
     private Snake[] snakes;
-    private int numberOfSnakes;
+    private final int numberOfSnakes;
     private int numberOfFruitsEaten;
-    private boolean gameIsPlaying;
 
+    public enum Cells {
+        FOOD,
+        NOFOOD
+    }
 
     public Board(int sizeX, int sizeY, int numberOfSnakes) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.numberOfSnakes = numberOfSnakes;
         this.map = new Cells[sizeX][sizeY];
-        this.gameIsPlaying = true;
 
         fillEmptyMap();
         createSnakes();
         createNewFood();
         createNewFood();
-
     }
 
 
@@ -56,10 +55,7 @@ public class Board {
         if (x < 0 || x >= sizeX || y < 0 || y >= sizeY) {
             return false;
         }
-        if (alreadyASnake(position)) {
-            return false;
-        }
-        return true;
+        return !alreadyASnake(position);
     }
 
     private boolean alreadyASnake(Position position) {
@@ -104,7 +100,6 @@ public class Board {
     }
 
 
-
     public void move() {
         for (int i = 0; i < numberOfSnakes; i++) {
             this.snakes[i].moveSnake();
@@ -147,11 +142,11 @@ public class Board {
         return numberOfSnakes;
     }
 
-    public int getSnakeWithMostPoints(){
-        if(numberOfSnakes>1){
-            if(snakes[1].getPoints() > snakes[0].getPoints()){
+    public int getSnakeWithMostPoints() {
+        if (numberOfSnakes > 1) {
+            if (snakes[1].getPoints() > snakes[0].getPoints()) {
                 return 2;
-            } else if(snakes[1].getPoints() == snakes[0].getPoints()){
+            } else if (snakes[1].getPoints() == snakes[0].getPoints()) {
                 return -1;
             }
         }

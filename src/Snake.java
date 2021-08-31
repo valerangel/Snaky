@@ -1,40 +1,39 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
-
 public class Snake {
+    private final Board board;
     private Position[] position;
     private int length;
-    private final Board board;
-
-    private Directions direction;
-    private Directions lastMove;
+    private Direction direction;
+    private Direction lastMove;
 
     private StatusSnake statusSnake;
-    private int snakeNumber;
+    private final int snakeNumber;
     private int points;
 
     //private static int  numberOfSnakes = 0;
+
+    public enum StatusSnake {
+        DEAD,
+        ALIVE
+    }
 
     public Snake(Board board, int snakeNumber) {
         this.board = board;
         this.length = 3;
         //Snake.numberOfSnakes++;
-        this.direction = Directions.RIGHT;
-        this.lastMove = Directions.RIGHT;
+        this.direction = Direction.RIGHT;
+        this.lastMove = Direction.RIGHT;
         this.statusSnake = StatusSnake.ALIVE;
         this.snakeNumber = snakeNumber;
         this.points = 0;
 
         this.position = new Position[length];
-        if(snakeNumber == 0) {
+        if (snakeNumber == 0) {
             for (int i = 0; i < length; i++) {
                 this.position[i] = new Position(i, 0);
             }
-        } else if(snakeNumber == 1) {
+        } else if (snakeNumber == 1) {
             for (int i = 0; i < length; i++) {
-                this.position[i] = new Position(i, board.getSizeY()-1);
+                this.position[i] = new Position(i, board.getSizeY() - 1);
             }
         }
 
@@ -44,15 +43,15 @@ public class Snake {
         Position[] newPositions;
 
         if (this.statusSnake == StatusSnake.DEAD) {
-            return ;
+            return;
         }
         if (!canMove()) {
             this.statusSnake = StatusSnake.DEAD;
-            return ;
+            return;
         }
 
         if (nexPositionIsFood()) {
-            newPositions = new Position[length+1];
+            newPositions = new Position[length + 1];
             for (int i = 0; i < length; i++) {
                 newPositions[i] = position[i];
             }
@@ -80,12 +79,12 @@ public class Snake {
 
     private Position nextPosition() {
         Position newPosition;
-        if (direction == Directions.RIGHT) {
+        if (direction == Direction.RIGHT) {
             newPosition = new Position(position[length - 1].getCoorX() + 1, position[length - 1].getCoorY());
-        } else if (direction == Directions.LEFT) {
+        } else if (direction == Direction.LEFT) {
             newPosition = new Position(position[length - 1].getCoorX() - 1, position[length - 1].getCoorY());
 
-        } else if (direction == Directions.UP) {
+        } else if (direction == Direction.UP) {
             newPosition = new Position(position[length - 1].getCoorX(), position[length - 1].getCoorY() - 1);
         } else {
             newPosition = new Position(position[length - 1].getCoorX(), position[length - 1].getCoorY() + 1);
@@ -97,19 +96,21 @@ public class Snake {
         return this.board.avaliableCell(nextPosition());
     }
 
-    public void setDirection(Directions direction) {
+    public void setDirection(Direction direction) {
         if (direction == this.direction) {
             return;
         }
-        if ((direction == Directions.RIGHT && this.lastMove == Directions.LEFT) ||
-                (direction == Directions.LEFT && this.lastMove == Directions.RIGHT) ||
-                (direction == Directions.UP && this.lastMove == Directions.DOWN) ||
-                (direction == Directions.DOWN && this.lastMove == Directions.UP)) {
+
+        if ((direction == Direction.RIGHT && this.lastMove == Direction.LEFT)
+                || (direction == Direction.LEFT && this.lastMove == Direction.RIGHT)
+                || (direction == Direction.UP && this.lastMove == Direction.DOWN)
+                || (direction == Direction.DOWN && this.lastMove == Direction.UP)
+        ) {
             return;
         }
+
         this.direction = direction;
     }
-
 
     public int getLength() {
         return length;
@@ -119,16 +120,15 @@ public class Snake {
         return position;
     }
 
-    public int getSnakeNumber(){
+    public int getSnakeNumber() {
         return snakeNumber;
     }
 
-    public int getPoints(){
+    public int getPoints() {
         return this.points;
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return this.statusSnake == StatusSnake.ALIVE;
     }
-
 }
